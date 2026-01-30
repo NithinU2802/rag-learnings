@@ -14,3 +14,18 @@ Key points
 - Useful for enterprise and domain-specific applications
 - Works without retraining the base model
 
+Step-by-step RAG flow
+---------------------
+```
+User Question
+     ↓
+Embedding (question → vector)
+     ↓
+Vector Database Search
+     ↓
+Relevant Documents
+     ↓
+Prompt = Question + Retrieved Docs
+     ↓
+LLM Answer
+```
