@@ -5,6 +5,24 @@ knowledge sources like databases or documents for relevant information. Then it 
 information to a language model to generate a grounded and accurate response. This approach 
 minimizes incorrect answers and keeps responses up to date without retraining the model.
 
+way to store data (Which is easy to understand by AI):
+- Vector DB
+- Knowledge Graph
+
+Vector DB Pipline:
+- Document Loader
+- Text Splitting
+- Embedding (Contextual Mathematics)
+- Vector DB (Chroma DB, FAISS, Pg Vector to store chunks)
+
+Knowledge Graph Pipline:
+- Document Loader
+- Entity Extraction (Named Entity Recognition)
+- Relationship Extraction
+- Graph Store (Neo4j, NetworkX)
+
+ ```[Subjective] --> [Predictive] --> [Objective]```
+
 Key points
 ----------
 - Uses LLMs + External Knowledge
