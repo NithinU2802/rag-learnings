@@ -1,0 +1,4 @@
+faiss-cpu
+google-generativeai
+numpy
+PyPDF2
