@@ -91,3 +91,30 @@ AI: Will frame answer by vectors with nearest values.
 - Semantic chunking (Split the doc based on meaning or topic changes. Each chunk contains a complete idea or topic)
 - Recursive chunking (Recursively split text using a hierarchy of seperators until the chunk size fits the limit. Common order: paragraph -> sentence -> words)
 - Sliding window chunking - (Creates overlapping chunks using a moving window. Each chunk shares some content with the previous chunk)
+
+### Qdrant 
+
+Qdrant is an open-source vector database designed to store, index and retrive high dimensional vectors. It make idea for RAD, semantic search and AI App by optimized for similarity search.
+
+```bash
+Note: Store embedding with metadata for fast retrieval.
+```
+
+In Qdrant, data is stored in a collection (similar to a table in DB). Each record contains ID, vector and payload.
+
+Eg:
+ID - 1 (unique)
+Vector - [0.12, -0.54, ..., 0.78] (embedding)
+payload - { "text": "Qdrant is a vector db built for similarity search.", "source": "docs/demo.pdf", "page": 1, "category": "intro" } (Metadata)
+
+```bash
+docker run -d --name qdrant ` \             
+   -p 6333:6333 -p 6334:6334 ` \              
+   -v "${HOME}\qdrant_storage:/qdrant/storage" ` \
+   qdrant/qdrant   
+```
+
+Below url to view dashboard of qdrant:
+```bash
+http://localhost:6333/dashboard
+```

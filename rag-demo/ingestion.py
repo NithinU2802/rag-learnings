@@ -2,7 +2,9 @@ from rag_utils.fetch import load_pdf_data
 from rag_utils.preprocessing import preprocess
 from rag_utils.chunking import chunk_text
 from rag_utils.embedding import generate_embeddings
+from rag_utils.vector_store import setup_collection, ingest_chunks
 from dotenv import load_dotenv
+from qdrant_client import QdrantClient
 import yaml
 import os
 
@@ -38,6 +40,18 @@ def main():
     # 4. Generate Embeddings
     embeddings = generate_embeddings(chunks, config["ollama"]["embedding_model"])
     print("Embedding for all chunks: ", embeddings[0][:5])
+
+    # 5. Setup Qdrant collection and ingest data
+    print("Connecting to Qdrant...")
+    client = QdrantClient(
+        host=config["qdrant"]["host"],
+        port=config["qdrant"]["port"]
+    )
+
+    setup_collection(client, config["qdrant"]["collection_name"], config["qdrant"]["vector_size"])
+    print("Ingesting vectors into Qdrant...")
+    ingest_chunks(client, config["qdrant"]["collection_name"], chunks, embeddings)
+    print("Data ingestion completed!")
 
 if __name__ == "__main__":
     main()
