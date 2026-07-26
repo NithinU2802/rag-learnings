@@ -1,0 +1,3 @@
+ollama:
+  llm_mode: "llama3.2:3b"
+  embedding_model: "nomic-embed-text:latest"
