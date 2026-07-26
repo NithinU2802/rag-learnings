@@ -84,3 +84,10 @@ Vector Store - Store these vectors in a vector database so similar information c
 
 User: Tell me about photosynthesis?
 AI: Will frame answer by vectors with nearest values.
+
+
+### Types of Chunking
+- Fixed size chunking (Split the doc into chunks of fixed size(based on char or tokens) without considering meaning)
+- Semantic chunking (Split the doc based on meaning or topic changes. Each chunk contains a complete idea or topic)
+- Recursive chunking (Recursively split text using a hierarchy of seperators until the chunk size fits the limit. Common order: paragraph -> sentence -> words)
+- Sliding window chunking - (Creates overlapping chunks using a moving window. Each chunk shares some content with the previous chunk)
