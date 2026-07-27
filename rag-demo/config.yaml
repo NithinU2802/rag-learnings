@@ -1,0 +1,9 @@
+ollama:
+  llm_model: "llama3.2:3b"
+  embedding_model: "nomic-embed-text:latest"
+
+qdrant:
+  host: "localhost"
+  port: 6333
+  collection_name: "photosynthesis_collection"
+  vector_size: 768

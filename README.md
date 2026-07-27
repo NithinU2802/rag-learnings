@@ -84,3 +84,67 @@ Vector Store - Store these vectors in a vector database so similar information c
 
 User: Tell me about photosynthesis?
 AI: Will frame answer by vectors with nearest values.
+
+
+### Types of Chunking
+- Fixed size chunking (Split the doc into chunks of fixed size(based on char or tokens) without considering meaning)
+- Semantic chunking (Split the doc based on meaning or topic changes. Each chunk contains a complete idea or topic)
+- Recursive chunking (Recursively split text using a hierarchy of seperators until the chunk size fits the limit. Common order: paragraph -> sentence -> words)
+- Sliding window chunking - (Creates overlapping chunks using a moving window. Each chunk shares some content with the previous chunk)
+
+### Qdrant 
+
+Qdrant is an open-source vector database designed to store, index and retrive high dimensional vectors. It make idea for RAD, semantic search and AI App by optimized for similarity search.
+
+```bash
+Note: Store embedding with metadata for fast retrieval.
+```
+
+In Qdrant, data is stored in a collection (similar to a table in DB). Each record contains ID, vector and payload.
+
+Eg:
+ID - 1 (unique)
+Vector - [0.12, -0.54, ..., 0.78] (embedding)
+payload - { "text": "Qdrant is a vector db built for similarity search.", "source": "docs/demo.pdf", "page": 1, "category": "intro" } (Metadata)
+
+```bash
+docker run -d --name qdrant ` \             
+   -p 6333:6333 -p 6334:6334 ` \              
+   -v "${HOME}\qdrant_storage:/qdrant/storage" ` \
+   qdrant/qdrant   
+```
+
+Below url to view dashboard of qdrant:
+```bash
+http://localhost:6333/dashboard
+```
+
+### Retrieval Phase
+
+Top-k in RAG - It is the number of relevant chunks or document retrieved from the vector db and sent to the LLM as content.
+
+```bash
+Note: keep the k value medium level to get a proper response. Incase of:
+Too Small - faster retrieval, less token usage and may miss important info.
+Too Large - more content will sent to LLM, higher token cost, more latency, context noise.
+```
+
+### Typically k values:
+| Use Case                    | Recommended K |
+|-----------------------------|--------------:|
+| Small RAG Project           | 3–5           |
+| Document Search             | 5–10          |
+| Enterprise Knowledge Base   | 10–20         |
+| Research Application        | 20+           |
+
+```bash
+results = client.query_points(
+     collection_name='documents',
+     query=query_embedding,
+     limit=5
+)
+```
+
+```bash
+User Query -> Query Embedding -> Vector Search -> Top-k Retrieval -> Build context/prompt -> Send to LLM -> Generate Answer
+```
