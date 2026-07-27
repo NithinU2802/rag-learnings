@@ -3,6 +3,7 @@ from rag_utils.preprocessing import preprocess
 from rag_utils.chunking import chunk_text
 from rag_utils.embedding import generate_embeddings
 from rag_utils.vector_store import setup_collection, ingest_chunks
+from rag_utils.ask_llm import ask_ollama
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient
 import yaml
@@ -52,6 +53,28 @@ def main():
     print("Ingesting vectors into Qdrant...")
     ingest_chunks(client, config["qdrant"]["collection_name"], chunks, embeddings)
     print("Data ingestion completed!")
+
+    # 6. Querying the collection
+    question = input("\nEnter your question about the document: ")
+    query_vector = generate_embeddings([question], config["ollama"]["embedding_model"])
+
+    top_matches = client.query_points(
+        collection_name=config["qdrant"]["collection_name"],
+        query=query_vector[0],
+        limit=6
+    )
+
+    # for hit in top_matches.points:
+    #     print(f"\n--- Retrived Chunk Rank - {hit.score:.4f} ---\n")
+        # print(hit.payload["text"])
+
+    context = "\n\n".join(text)
+
+    # 7. Generate answer by asking Ollama
+    answer = ask_ollama(question, context, config)
+    print("\n--- Answer --\n")
+    print(answer)
+    print("\n")
 
 if __name__ == "__main__":
     main()

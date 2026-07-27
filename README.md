@@ -118,3 +118,33 @@ Below url to view dashboard of qdrant:
 ```bash
 http://localhost:6333/dashboard
 ```
+
+### Retrieval Phase
+
+Top-k in RAG - It is the number of relevant chunks or document retrieved from the vector db and sent to the LLM as content.
+
+```bash
+Note: keep the k value medium level to get a proper response. Incase of:
+Too Small - faster retrieval, less token usage and may miss important info.
+Too Large - more content will sent to LLM, higher token cost, more latency, context noise.
+```
+
+### Typically k values:
+| Use Case                    | Recommended K |
+|-----------------------------|--------------:|
+| Small RAG Project           | 3–5           |
+| Document Search             | 5–10          |
+| Enterprise Knowledge Base   | 10–20         |
+| Research Application        | 20+           |
+
+```bash
+results = client.query_points(
+     collection_name='documents',
+     query=query_embedding,
+     limit=5
+)
+```
+
+```bash
+User Query -> Query Embedding -> Vector Search -> Top-k Retrieval -> Build context/prompt -> Send to LLM -> Generate Answer
+```
